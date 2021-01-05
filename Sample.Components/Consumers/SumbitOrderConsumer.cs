@@ -1,8 +1,7 @@
-﻿using System;
-using System.Threading.Tasks;
-using MassTransit;
+﻿using MassTransit;
 using Microsoft.Extensions.Logging;
 using Sample.Contracts;
+using System.Threading.Tasks;
 
 namespace Sample.Components.Consumers
 {
@@ -14,8 +13,8 @@ namespace Sample.Components.Consumers
         {
             _logger = logger;
         }
-        
-        public async  Task Consume(ConsumeContext<SubmitOrder> context)
+
+        public async Task Consume(ConsumeContext<SubmitOrder> context)
         {
             _logger.Log(LogLevel.Debug, "SubmitOrderConsumer: {CustomerNumber}", context.Message.CustomerNumber);
             if (context.Message.CustomerNumber.Contains("TEST"))
@@ -27,7 +26,7 @@ namespace Sample.Components.Consumers
                     context.Message.CustomerNumber,
                     Reason = $"Test Customer cannot submit orders: {context.Message.CustomerNumber}"
                 });
-                
+
                 return;
             }
 

@@ -1,18 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using MassTransit;
+﻿using MassTransit;
+using MassTransit.Definition;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using Sample.Components.Consumers;
 using Sample.Contracts;
 
 namespace Sample.Api
@@ -28,14 +22,15 @@ namespace Sample.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.TryAddSingleton(KebabCaseEndpointNameFormatter.Instance);
             services.AddMassTransit(cfg =>
             {
-                cfg.AddConsumer<SumbitOrderConsumer>();
-                
-                cfg.AddMediator();
-                
+                cfg.AddBus(provider => Bus.Factory.CreateUsingRabbitMq());
+
                 cfg.AddRequestClient<SubmitOrder>();
             });
+
+            services.AddMassTransitHostedService();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
