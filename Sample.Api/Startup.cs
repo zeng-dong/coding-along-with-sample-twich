@@ -7,7 +7,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Sample.Components.Consumers;
 using Sample.Contracts;
+using System;
 
 namespace Sample.Api
 {
@@ -27,7 +29,17 @@ namespace Sample.Api
             {
                 cfg.AddBus(provider => Bus.Factory.CreateUsingRabbitMq());
 
-                cfg.AddRequestClient<SubmitOrder>();
+                // this will publish, since on address
+                //cfg.AddRequestClient<SubmitOrder>();
+
+                // exchange bind to queue
+                cfg.AddRequestClient<SubmitOrder>(
+                  new Uri($"queue:{KebabCaseEndpointNameFormatter.Instance.Consumer<SumbitOrderConsumer>()}"));
+
+                // no binding, send to exchange only, if no queue exists, message just stop there.
+                //cfg.AddRequestClient<SubmitOrder>(
+                //    //new Uri($"exchange:{KebabCaseEndpointNameFormatter.Instance.Consumer<SumbitOrderConsumer>()}"));
+                //    new Uri($"exchange:submit-order"));
             });
 
             services.AddMassTransitHostedService();

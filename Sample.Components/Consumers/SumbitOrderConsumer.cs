@@ -17,27 +17,34 @@ namespace Sample.Components.Consumers
         public async Task Consume(ConsumeContext<SubmitOrder> context)
         {
             _logger.Log(LogLevel.Debug, "SubmitOrderConsumer: {CustomerNumber}", context.Message.CustomerNumber);
+
             if (context.Message.CustomerNumber.Contains("TEST"))
             {
-                await context.RespondAsync<OrderSubmissionRejected>(new
+                //if (context.ResponseAddress != null)  // check need response by checking address or requestid
+                if (context.RequestId != null)
                 {
-                    InVar.Timestamp,
-                    context.Message.OrderId,
-                    context.Message.CustomerNumber,
-                    Reason = $"Test Customer cannot submit orders: {context.Message.CustomerNumber}"
-                });
+                    await context.RespondAsync<OrderSubmissionRejected>(new
+                    {
+                        InVar.Timestamp,
+                        context.Message.OrderId,
+                        context.Message.CustomerNumber,
+                        Reason = $"Test Customer cannot submit orders: {context.Message.CustomerNumber}"
+                    });
 
-                return;
+                    return;
+                }
             }
 
-            await context.RespondAsync<OrderSubmissionAccepted>(new
+            if (context.ResponseAddress != null)
             {
-                InVar.Timestamp
+                await context.RespondAsync<OrderSubmissionAccepted>(new
+                {
+                    InVar.Timestamp
 ,
-                context.Message.OrderId,
-                context.Message.CustomerNumber
-            });
-
+                    context.Message.OrderId,
+                    context.Message.CustomerNumber
+                });
+            }
         }
     }
 }
