@@ -34,7 +34,7 @@ namespace Sample.Api
 
                 // exchange bind to queue
                 cfg.AddRequestClient<SubmitOrder>(
-                  new Uri($"queue:{KebabCaseEndpointNameFormatter.Instance.Consumer<SumbitOrderConsumer>()}"));
+                  new Uri($"queue:{KebabCaseEndpointNameFormatter.Instance.Consumer<SubmitOrderConsumer>()}"));
 
                 // no binding, send to exchange only, if no queue exists, message just stop there.
                 //cfg.AddRequestClient<SubmitOrder>(

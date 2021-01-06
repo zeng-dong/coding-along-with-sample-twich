@@ -34,7 +34,7 @@ namespace Sample.Service
                     services.TryAddSingleton(KebabCaseEndpointNameFormatter.Instance);
                     services.AddMassTransit(cfg =>
                     {
-                        cfg.AddConsumersFromNamespaceContaining<SumbitOrderConsumer>();
+                        cfg.AddConsumersFromNamespaceContaining<SubmitOrderConsumer>();
 
                         cfg.AddBus(ConfigureBus);
                     });

@@ -1,10 +1,18 @@
 version: "3.6"
 
+networks:
+  twitch:
+
 services:  
   rabbitmq:
-    container_name: dev-rabbitmq
+    container_name: twitch-rabbitmq
     hostname: rabbit
     image: rabbitmq:3-management
     ports:
      - "5672:5672"
      - "15672:15672"
+  redis:
+    image: redis
+    container_name: twitch-redis    
+    ports:
+      - "6379:6379"

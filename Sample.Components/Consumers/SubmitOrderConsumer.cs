@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 namespace Sample.Components.Consumers
 {
-    public class SumbitOrderConsumer : IConsumer<SubmitOrder>
+    public class SubmitOrderConsumer : IConsumer<SubmitOrder>
     {
-        readonly ILogger<SumbitOrderConsumer> _logger;
+        readonly ILogger<SubmitOrderConsumer> _logger;
 
-        public SumbitOrderConsumer(ILogger<SumbitOrderConsumer> logger)
+        public SubmitOrderConsumer(ILogger<SubmitOrderConsumer> logger)
         {
             _logger = logger;
         }
