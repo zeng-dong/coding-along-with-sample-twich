@@ -33,13 +33,13 @@ namespace Sample.Api
                 //cfg.AddRequestClient<SubmitOrder>();
 
                 // exchange bind to queue
-                cfg.AddRequestClient<SubmitOrder>(
-                  new Uri($"queue:{KebabCaseEndpointNameFormatter.Instance.Consumer<SubmitOrderConsumer>()}"));
-
-                // no binding, send to exchange only, if no queue exists, message just stop there.
                 //cfg.AddRequestClient<SubmitOrder>(
-                //    //new Uri($"exchange:{KebabCaseEndpointNameFormatter.Instance.Consumer<SumbitOrderConsumer>()}"));
-                //    new Uri($"exchange:submit-order"));
+                //  new Uri($"queue:{KebabCaseEndpointNameFormatter.Instance.Consumer<SubmitOrderConsumer>()}"));
+
+                cfg.AddRequestClient<SubmitOrder>(
+                    new Uri($"exchange:{KebabCaseEndpointNameFormatter.Instance.Consumer<SubmitOrderConsumer>()}"));
+                    
+                cfg.AddRequestClient<CheckOrder>();
             });
 
             services.AddMassTransitHostedService();

@@ -10,6 +10,7 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Sample.Components.StateMachines;
 
 
 namespace Sample.Service
@@ -36,6 +37,11 @@ namespace Sample.Service
                     {
                         cfg.AddConsumersFromNamespaceContaining<SubmitOrderConsumer>();
 
+                        cfg.AddSagaStateMachine<OrderStateMachine, OrderState>()
+                            .RedisRepository(
+                                //s => s.DatabaseConfiguration("127.0.0.1")      default
+                                );
+                        
                         cfg.AddBus(ConfigureBus);
                     });
 

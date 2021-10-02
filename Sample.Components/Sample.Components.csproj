@@ -11,10 +11,7 @@
 	<ItemGroup>
 		<PackageReference Include="MassTransit" Version="6.2.3" />
 		<PackageReference Include="MassTransit.Analyzers" Version="6.2.3" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="StateMachines\" />
+		<PackageReference Include="MassTransit.Redis" Version="6.2.3" />
 	</ItemGroup>
 
 </Project>
